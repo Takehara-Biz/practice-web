@@ -1,0 +1,11 @@
+name: nestjs-server
+
+services:
+  server:
+    image: node:26-alpine
+    working_dir: /app/server/my-nestjs-app
+    command: npm run start 
+    ports:
+      - 3000:3000
+    volumes:
+      - ./volumes/app:/app
