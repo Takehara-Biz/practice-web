@@ -1,0 +1,1 @@
+OpenAPI Generatorにより生成されたクライアント側のTSコードを、トランスパイルした結果が、transpiledフォルダに格納される。

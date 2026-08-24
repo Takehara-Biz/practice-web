@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p>下のボタンを押すと、「GET /Pet/1」を呼び出して、その結果を表示します。</p>
+  <button id="call">GET /Pet/1 の呼び出し</button>
+  <dl>
+    <dt>name</dt>
+    <dd id="result">（呼び出した結果のnameプロパティ値をここに表示します。）</dd>
+  </dl>
+  <script type="module">
+    import { PetApi } from './transpiled/generated/apis/PetApi.js';
+    const apiClient = new PetApi({
+      basePath: 'http://localhost:3000', // NestJSが動いているポート番号を指定
+      middleware: [],
+    });
+
+    document.querySelector("button").addEventListener("click", async () => {
+
+      // 自動生成されたコードを利用して、GET /Pet/1を呼び出してJSONデータを取得する。
+      const pet = await apiClient.getPetById({petId: 1});
+      console.log("pet : ", pet);
+      // そのデータを元に、nameプロパティを抽出して、id="result"のタグの中にセットする。
+      document.getElementById("result").innerText = pet.name ?? "nameの取得に失敗しました。";
+    });
+  </script>
+</body>
+</html>
