@@ -12,7 +12,7 @@ docker run --rm \
   -v ${PWD}/../:/local openapitools/openapi-generator-cli generate \
   -i /local/generator/petstore.yaml \
   -g typescript-fetch \
-  -o /local/volumes/app/client/generated/
+  -o /local/generator/client/generated/
 
 echo "サーバ側のコードを生成します。"
 docker run --rm \

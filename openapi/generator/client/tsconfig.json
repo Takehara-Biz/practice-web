@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    // ⭐️↓変更。TSからJSにトランスパイルした時に、JSファイルのimport文に「.js」拡張子をつけるようにする。
+    // 変更前 : import * as runtime from '../runtime';
+    // 変更後 : import * as runtime from '../runtime.js';
+    // 変更前のままWebアプリを起動すると、ブラウザでfrom句のファイルが見つけられずエラーが出てしまうため。
+    "module": "ESNext",
+    // ⭐️↓追加。TSからJSにトランスパイルした時に、JSファイルのimport文に「.js」拡張子をつけるようにする。
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    // ⭐️↓変更。commonjsからブラウザが処理できるESModulesに変更。
+    "target": "ES2022",
+    "sourceMap": true,
+
+    // ⭐️↓変更
+    "outDir": "../../volumes/app/server/my-nestjs-app/public/transpiled",
+    // ⭐️↓エラー解消のため、追加したプロパティ
+    "rootDir": ".",
+
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false
+  },
+  // ⭐️↓追加。TSからJSにトランスパイルした時に、JSファイルのimport文に「.js」拡張子をつけるようにする。
+  "tsc-alias": {
+    "resolveFullPaths": true
+  }
+}
