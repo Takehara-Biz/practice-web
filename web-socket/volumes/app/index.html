@@ -11,6 +11,7 @@
 
   <script>
     let socket = null;
+    let clientIntervalId = null;
 
     // 接続ボタン
     document.getElementById('connectBtn').addEventListener('click', () => {
@@ -19,18 +20,32 @@
         return;
       }
 
-      socket = new WebSocket(`ws//${location.host}`);
+      const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      socket = new WebSocket(`${wsProtocol}//${location.host}`);
 
       socket.onopen = () => {
         console.log('WebSocket接続が確立しました');
+
+        // クライアントから2秒ごとに現在時刻を送信
+        clientIntervalId = setInterval(() => {
+          if (socket && socket.readyState === WebSocket.OPEN) {
+            const now = new Date().toLocaleTimeString('ja-JP');
+            socket.send(`[クライアント時刻] ${now}`);
+          }
+        }, 2000);
       };
 
       socket.onmessage = (event) => {
-        console.log('受信データ:', event.data);
+        console.log('サーバーから受信:', event.data);
       };
 
       socket.onclose = () => {
         console.log('WebSocket接続が切断されました');
+        // クライアント側のタイマーを停止
+        if (clientIntervalId) {
+          clearInterval(clientIntervalId);
+          clientIntervalId = null;
+        }
       };
 
       socket.onerror = (error) => {

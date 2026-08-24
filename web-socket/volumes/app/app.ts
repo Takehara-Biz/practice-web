@@ -3,11 +3,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { WebSocketServer, WebSocket } from 'ws';
 
+const PORT = 3000;
+
 // HTTPサーバーを作成
 const server = http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
   const method = req.method || 'GET';
 
-  // ブラウザからアクセスがあったら、HTMLファイルを返す
   if (method === 'GET') {
     const filePath = path.join(__dirname, 'index.html');
 
@@ -33,22 +34,27 @@ const wss = new WebSocketServer({ server });
 wss.on('connection', (ws: WebSocket) => {
   console.log('クライアントがWebSocket接続しました');
 
-  // 1秒ごとにメッセージを送信
+  // サーバーから2秒ごとにメッセージを送信
   let count = 1;
-  const intervalId = setInterval(() => {
+  const serverIntervalId = setInterval(() => {
     if (ws.readyState === WebSocket.OPEN) {
       ws.send(`サーバーからの定期メッセージ (${count++}回目)`);
     }
-  }, 1000);
+  }, 2000);
+
+  // クライアントからのメッセージを受信してコンソールに出力
+  ws.on('message', (message: Buffer) => {
+    console.log(`クライアントから受信: ${message.toString()}`);
+  });
 
   // 切断時の処理
   ws.on('close', () => {
     console.log('クライアントが切断したため、タイマーを停止します');
-    clearInterval(intervalId);
+    clearInterval(serverIntervalId);
   });
 });
 
 // サーバー起動
-server.listen(3000, () => {
-  console.log(`Server running at http://localhost:3000/ws-test`);
+server.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}/`);
 });
