@@ -2,6 +2,10 @@ import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 import { WebSocketServer, WebSocket } from 'ws';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = 3000;
 
@@ -28,7 +32,7 @@ const server = http.createServer((req: http.IncomingMessage, res: http.ServerRes
   }
 });
 
-// WebSocketサーバーを作成して統合
+// WebSocketサーバーを作成して統合。引数には先ほど作成したserverを渡すことで同じポート番号を使い回すことになる。
 const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws: WebSocket) => {

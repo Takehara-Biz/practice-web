@@ -10,7 +10,9 @@
   <button id="disconnectBtn">2. WebSocket切断</button>
 
   <script>
+    // web-socketのコネクションオブジェクトを保持
     let socket = null;
+    // 後から定期処理をストップさせるためのIDを保持
     let clientIntervalId = null;
 
     // 接続ボタン
@@ -20,8 +22,7 @@
         return;
       }
 
-      const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
-      socket = new WebSocket(`${wsProtocol}//${location.host}`);
+      socket = new WebSocket(`ws://${location.host}`);
 
       socket.onopen = () => {
         console.log('WebSocket接続が確立しました');
