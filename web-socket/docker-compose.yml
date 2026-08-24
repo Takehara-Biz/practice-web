@@ -1,0 +1,11 @@
+name: web-socket
+
+services:
+  server:
+    image: node:26-alpine
+    working_dir: /app
+    command: ["npx", "tsx", "app.ts"]
+    ports:
+      - 3000:3000
+    volumes:
+      - ./volumes/app:/app

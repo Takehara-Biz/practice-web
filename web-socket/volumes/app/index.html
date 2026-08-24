@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>WebSocket Test</title>
+</head>
+<body>
+  <h1>WebSocket テスト画面</h1>
+  <button id="connectBtn">1. WebSocket接続を開始</button>
+  <button id="disconnectBtn">2. WebSocket切断</button>
+
+  <script>
+    let socket = null;
+
+    // 接続ボタン
+    document.getElementById('connectBtn').addEventListener('click', () => {
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        console.log('すでに接続されています');
+        return;
+      }
+
+      socket = new WebSocket(`ws//${location.host}`);
+
+      socket.onopen = () => {
+        console.log('WebSocket接続が確立しました');
+      };
+
+      socket.onmessage = (event) => {
+        console.log('受信データ:', event.data);
+      };
+
+      socket.onclose = () => {
+        console.log('WebSocket接続が切断されました');
+      };
+
+      socket.onerror = (error) => {
+        console.error('WebSocketエラー:', error);
+      };
+    });
+
+    // 切断ボタン
+    document.getElementById('disconnectBtn').addEventListener('click', () => {
+      if (socket) {
+        socket.close();
+        socket = null;
+      } else {
+        console.log('接続されていません');
+      }
+    });
+  </script>
+</body>
+</html>
